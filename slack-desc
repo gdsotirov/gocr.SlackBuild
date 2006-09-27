@@ -1,0 +1,11 @@
+gocr: GOCR (An Optical Character Recognition program)
+gocr:
+gocr: GOCR is an OCR (Optical Character Recognition) program. It converts
+gocr: scanned images of text back to text files. Joerg Schulenburg started
+gocr: the program, and now leads a team of developers. GOCR can be used with
+gocr: different front-ends like Kooka in KDE, which makes it very easy to
+gocr: port to different OSes and architectures. It can open many different
+gocr: image formats, and its quality have been improving in a daily basis.
+gocr:
+gocr: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
+gocr:

@@ -7,7 +7,7 @@
 . /etc/slack-package.conf
 
 NAME=gocr
-VERSION=0.41
+VERSION=0.43
 BUILD=1
 
 cd $TMP
@@ -26,6 +26,7 @@ make DESTDIR=$PKG/usr install
 
 cd $PKG
 bin_perms $PKG
+strip_bin
 gzip_man $PKG
 cd $SRC
 create_docs $PKG $NAME-$VERSION

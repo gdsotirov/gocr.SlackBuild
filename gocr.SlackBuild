@@ -1,41 +1,59 @@
 #!/bin/sh
 #
-# SlackBuild for gocr
+# SlackBuild for GOCR
 # Written by Georgi D. Sotirov <gdsotirov@dir.bg>
 #
 
 . ../slack-package.conf
 
 NAME=gocr
-VERSION=0.46
+VERSION=0.48
 ARCH=${ARCH:-i486}
 BUILD=1
 
 TMP=${TMP:-/tmp}
+CWD=${CWD:-`pwd`}
 PKG_DIR=${PKG_DIR:-/tmp}
 
+if [ ! -e $TMP ]; then
+  mkdir -p $TMP # location to build the source
+fi
+
+SRC=$TMP/$NAME-$VERSION
+if [ -e $SRC -a -d $SRC ]; then
+  echo "Source directory '$SRC' already exists! Plaese, move it or remove it."
+  exit 1
+fi
+
+PKG=$TMP/package-$NAME
+if [ -e $PKG -a -d $PKG ]; then
+  echo "Package creation directory '$PKG' already exists! Please, move it or remove it."
+  exit 2
+fi
+mkdir -p $PKG
+
+# Extract the source
 cd $TMP
 tar -zxvf $CWD/$NAME-$VERSION.tar.gz
-SRC=$TMP/$NAME-$VERSION
 cd $SRC
 fix_source
 
+# Configure
 CFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
             --sysconfdir=/etc || exit 1
 
-make || exit 2
-
-PKG="$TMP/package-$NAME"
-mkdir -p $PKG
-
+# Build & install
+make -j4 || exit 2
 make DESTDIR=$PKG/usr install || exit 3
 
+# Prepare
 bin_perms $PKG
 ( cd $PKG; strip_bin )
 gzip_man $PKG
 DOCFILES="$DOCFILES gpl.html REMARK.txt REVIEW"
 ( cd $SRC; create_docs $PKG $NAME-$VERSION )
+rm -rf $PKG/usr/doc/$NAME-$VERSION/doc
 lynx -dump $SRC/gpl.html > $PKG/usr/doc/$NAME-$VERSION/COPYING
 
 mkdir -p $PKG/install

@@ -1,2 +1,2 @@
-glibc-solibs >= 2.13
+glibc-solibs >= 2.15
 netpbm >= 10.49.02
